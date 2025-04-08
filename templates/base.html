@@ -9,6 +9,10 @@
         <title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+        {% if article %}
+            <meta name="author" content="{{ article.author }}">
+            <meta name="keywords" content="{% for tag in article.tags %}{{ tag }}{% if not loop.last %}, {% endif %}{% endfor %}">
+        {% endif %}
         {% if USE_OPEN_GRAPH %}
             {% if OPEN_GRAPH_FB_APP_ID %}
                 <meta property="fb:app_id" content="{{ OPEN_GRAPH_FB_APP_ID }}" />
@@ -24,21 +28,38 @@
                     <meta property="article:tag" content="{{ tag }}" />
                 {% endfor %}
                 {% endif %}
+                <meta name="twitter:card" content="summary_large_image">
+                <meta name="twitter:title" content="{{ article.title|striptags }}">
+                <meta name="twitter:description" content="{{ article.summary|striptags }}">
+                {% if article.metadata.open_graph_image %}
+                    <meta property="og:image" content="{{ SITEURL }}/{{ article.metadata.open_graph_image }}"/>
+                    <meta name="twitter:image" content="{{ SITEURL }}/{{ article.metadata.open_graph_image }}">
+                {% endif %}
             {% elif page %}
-                <meta property="og:type" content="article" />
+                <meta property="og:type" content="website" />
                 <meta property="og:title" content="{{ page.title|striptags }}" />
                 <meta property="og:url" content="{{ SITEURL }}/{{ page.url }}" />
+                <meta property="og:description" content="{{ page.summary|striptags }}" />
+                <meta name="twitter:card" content="summary_large_image">
+                <meta name="twitter:title" content="{{ page.title|striptags }}">
+                <meta name="twitter:description" content="{{ page.summary|striptags }}">
+                {% if page.metadata.open_graph_image %}
+                    <meta property="og:image" content="{{ SITEURL }}/{{ page.metadata.open_graph_image }}"/>
+                    <meta name="twitter:image" content="{{ SITEURL }}/{{ page.metadata.open_graph_image }}">
+                {% endif %}
             {% else %}
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="{{ SITENAME }}" />
                 <meta property="og:url" content="{{ SITEURL }}" />
                 <meta property="og:description" content="{{ SITENAME }}" />
                 {% if OPEN_GRAPH_IMAGE %}
-                    <meta property="og:image" content="{{ SITEURL }}/static/{{ OPEN_GRAPH_IMAGE }}"/>
+                    <meta property="og:image" content="{{ SITEURL }}/{{ OPEN_GRAPH_IMAGE }}"/>
+                    <meta name="twitter:image" content="{{ SITEURL }}/{{ OPEN_GRAPH_IMAGE }}">
                 {% endif %}
             {% endif %}
         {% endif %}
         {% block stylesheets %}
+        <link rel="icon" href="{{ SITEURL }}/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="{{ SITEURL }}/theme/css/normalize.css">
         <link href='//fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <link href='//fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>

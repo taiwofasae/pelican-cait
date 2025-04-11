@@ -1,13 +1,13 @@
 <header id="sidebar" class="side-shadow">
     <hgroup id="site-header">
-        <a id="site-title" href="{{ SITEURL }}"><h1>{{ SITENAME }}</h1></a>
+        <a id="site-title" href="{{ SITEURL }}/"><h1>{{ SITENAME }}</h1></a>
         <p id="site-desc">{% if SITESUBTITLE %} {{ SITESUBTITLE }} {% endif %}</p>
     </hgroup>
     <nav>
         <ul id="nav-links">
             {% for name, url in LINKS %}
             {% if url and url.find(':') > 0 %}
-                <li><a href="{{ url }}">{{ name }}</a></li>
+                <li><a href="{{ url }}" target="_blank">{{ name }}</a></li>
             {% else %}
                 <li><a href="{{ SITEURL }}/{{ url }}">{{ name }}</a></li>
             {% endif %}
